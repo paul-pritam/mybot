@@ -7,7 +7,7 @@
             <pose>0 0 -0.095 0 0 0</pose>
             
             <collision name="warehouse_collision">
-                <!-- Z is now 0.1 -->
+              
                 <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <mesh>
