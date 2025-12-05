@@ -19,21 +19,35 @@
                 <cylinder radius="0.05" length="0.04"/>
             </geometry>
         </collision>
-
         <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.05"/>
     </link>
 
     <gazebo reference="laser_frame">
-        <material>Gazebo/Red</material>
+        <visual>
+            <material>
+                <ambient>1 0 0 1</ambient>
+                <diffuse>1 0 0 1</diffuse>
+                <specular>1 0 0 1</specular>
+            </material>
+        </visual>
 
-        <sensor name="laser" type="ray">
+        <!-- IGNITION SENSOR SETUP -->
+        <sensor name="laser" type="gpu_lidar">
             <pose> 0 0 0 0 0 0 </pose>
             <visualize>true</visualize>
             <update_rate>10</update_rate>
+            
+            <!-- This tag sets the Ignition topic name -->
+            <topic>scan</topic> 
+            
+            <!-- This tag sets the frame ID for the ROS message -->
+            <gz_frame_id>laser_frame</gz_frame_id>
+
             <ray>
                 <scan>
                     <horizontal>
                         <samples>360</samples>
+                        <resolution>1</resolution>
                         <min_angle>-3.14</min_angle>
                         <max_angle>3.14</max_angle>
                     </horizontal>
@@ -43,13 +57,6 @@
                     <max>12</max>
                 </range>
             </ray>
-            <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
-                <ros>
-                    <argument>out:=scan</argument>
-                </ros>
-                <output_type>sensor_msgs/LaserScan</output_type>
-                <frame_name>laser_frame</frame_name>
-            </plugin>
         </sensor>
     </gazebo>
 
