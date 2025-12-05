@@ -31,16 +31,14 @@
             </material>
         </visual>
 
-        <!-- IGNITION SENSOR SETUP -->
+        
         <sensor name="laser" type="gpu_lidar">
             <pose> 0 0 0 0 0 0 </pose>
             <visualize>true</visualize>
             <update_rate>10</update_rate>
             
-            <!-- This tag sets the Ignition topic name -->
-            <topic>scan</topic> 
             
-            <!-- This tag sets the frame ID for the ROS message -->
+            
             <gz_frame_id>laser_frame</gz_frame_id>
 
             <ray>

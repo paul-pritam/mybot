@@ -183,10 +183,6 @@
       <pose>0 0 -0.09 0 0 0</pose>
     </include>
 
-    <!-- 
-       REMOVED: TUGBOT and CHARGING STATION
-       This allows you to spawn your own robot without collision.
-    -->
 
     <!-- Carts -->
     <include>

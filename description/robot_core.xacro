@@ -142,7 +142,7 @@
                 <specular>0 0 0 1</specular>
             </material>
         </visual>
-        <!-- Friction for Ignition/Gazebo Fortress -->
+       
         <collision>
             <surface>
                 <friction>
