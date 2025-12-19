@@ -1,0 +1,45 @@
+slam_toolbox:
+  ros__parameters:
+    # System
+    use_sim_time: true
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_link
+    scan_topic: /scan
+    mode: mapping
+
+    # Update Rates
+    map_update_interval: 1.0
+    minimum_time_interval: 0.1
+    transform_timeout: 0.2
+    tf_buffer_duration: 30.0
+    stack_size_to_use: 40000000
+    enable_interactive_mode: true
+
+    # Map Config
+    resolution: 0.05
+    max_laser_range: 12.0
+
+    # Scan Matcher (The wall snapping logic)
+    minimum_travel_distance: 0.05
+    minimum_travel_heading: 0.05
+    correlation_search_space_dimension: 1.0
+    correlation_search_space_resolution: 0.02
+    correlation_search_space_smear_deviation: 0.1
+
+    # Loop Closure
+    do_loop_closing: true
+    use_response_expansion: true
+    loop_search_maximum_distance: 5.0
+    loop_match_minimum_chain_size: 10
+    loop_match_maximum_variance_coarse: 3.0
+    loop_match_minimum_response_coarse: 0.3
+    loop_match_minimum_response_fine: 0.4
+
+    # Solver
+    solver_plugin: "solver_plugins::CeresSolver"
+    ceres_linear_solver: "SPARSE_NORMAL_CHOLESKY"
+    ceres_preconditioner: "SCHUR_JACOBI"
+    ceres_trust_strategy: "LEVENBERG_MARQUARDT"
+    ceres_dogleg_type: "TRADITIONAL_DOGLEG"
+    ceres_loss_function: "None"

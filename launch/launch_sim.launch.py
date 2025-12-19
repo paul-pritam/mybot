@@ -44,6 +44,16 @@ def generate_launch_description():
         output='screen'
     )
 
+    rviz = Node(
+    package='rviz2',
+    executable='rviz2',
+    name='rviz2',
+    output='screen',
+    parameters=[{'use_sim_time': True}],
+    arguments=['-d', '/home/ubuntu/.rviz2/fsm_map.rviz']  # ← ADD THIS LINE
+)
+
+
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -77,5 +87,6 @@ def generate_launch_description():
         rsp,
         gazebo,
         spawn,
-        bridge
+        bridge,
+        rviz
     ])

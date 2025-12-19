@@ -55,6 +55,7 @@
                     <max>12</max>
                 </range>
             </ray>
+            <topic>scan</topic>
         </sensor>
     </gazebo>
 
