@@ -50,7 +50,7 @@ def generate_launch_description():
     name='rviz2',
     output='screen',
     parameters=[{'use_sim_time': True}],
-    arguments=['-d', '/home/ubuntu/.rviz2/fsm_map.rviz']  # ← ADD THIS LINE
+    arguments=['-d', '/ros2_ws/src/mybot/config/drive_robot.rviz'] 
 )
 
 
