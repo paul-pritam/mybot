@@ -1,11 +1,13 @@
 <?xml version="1.0" ?>
 
 <sdf version="1.8">
-  <world name="my_world">
+  <world name="myworld">
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
+    
+    <!-- World Plugins -->
     <plugin 
       filename="ignition-gazebo-physics-system" 
       name="gz::sim::systems::Physics">
@@ -24,6 +26,7 @@
       <render_engine>ogre2</render_engine>
     </plugin>
     
+    <!-- Lighting -->
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
@@ -38,6 +41,7 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
 
+    <!-- Ground Plane -->
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -65,7 +69,7 @@
       </link>
     </model>
 
-    <!-- include il modello del magazzino-->
+    <!-- Warehouse Environment -->
      <include>
       <uri>
           model://Depot
@@ -97,54 +101,8 @@
       <pose> -15.033500 4.803520 1.687260 0 0 0 </pose>
     </include>
 
-    <include>
-      <uri>
-          model://pioneer2dx
-      </uri>
-      <name>robot_scan</name>
-      <pose> -13.10 2.64 0 0 0 -1.57079 </pose>
-
-      <plugin
-        filename="ignition-gazebo-pose-publisher-system"
-        name="ignition::gazebo::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <use_pose_vector_msg>true</use_pose_vector_msg>
-        <static_publisher>true</static_publisher>
-        <static_update_frequency>1</static_update_frequency>
-      </plugin>
-
-      <plugin
-        filename="ignition-gazebo-odometry-publisher-system"
-        name="ignition::gazebo::systems::OdometryPublisher">
-        <odom_frame>robot_scan/odom</odom_frame>
-        <robot_base_frame>robot_scan</robot_base_frame>
-      </plugin>
-    </include>
-
-    <include>
-      <uri>
-          model://quadcopter
-      </uri>
-      <pose> -10.773700 -2.313900 0.35 0 0 0 </pose>
-      <name>quadcopter</name>
-
-      <plugin
-        filename="ignition-gazebo-pose-publisher-system"
-        name="ignition::gazebo::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <use_pose_vector_msg>true</use_pose_vector_msg>
-        <static_publisher>true</static_publisher>
-        <static_update_frequency>1</static_update_frequency>
-      </plugin>
-
-      <plugin
-        filename="ignition-gazebo-odometry-publisher-system"
-        name="ignition::gazebo::systems::OdometryPublisher">
-        <odom_frame>quadcopter/odom</odom_frame>
-        <robot_base_frame>quadcopter</robot_base_frame>
-      </plugin>
-    </include>
-
+ 
+    <!-- Static Obstacles and Decor -->
     <include>
       <uri>
           model://parallelepiped
@@ -161,6 +119,7 @@
       <name>end_parallelepiped</name>
     </include>
 
+    <!-- Shelves -->
     <include>
       <uri>
           model://shelf
@@ -233,6 +192,7 @@
       <name>scaffale_9</name>
     </include>
 
+    <!-- Mobile Pallets -->
     <include>
       <uri>
           model://pallet_box_mobile
@@ -248,5 +208,14 @@
       <pose> 4.809810 -1.044250 -0.005001 0 0 -1.591330 </pose>
       <name>pancale_2</name>
     </include>
+
+    <gui fullscreen="0">
+      <camera name="user_camera">
+        <pose>-14.853 1.584 1.0455  0 0.5 0</pose>
+        <horizontal_fov>0.5</horizontal_fov>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>  
   </world>
 </sdf>

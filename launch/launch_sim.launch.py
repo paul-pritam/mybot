@@ -10,9 +10,8 @@ def generate_launch_description():
     pkg_mybot = get_package_share_directory('mybot')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    world_arg = DeclareLaunchArgument(
-        'world',
-        default_value=os.path.join(pkg_mybot, 'worlds', 'tugbot_warehouse.sdf'),
+    world_arg = DeclareLaunchArgument('world',
+        default_value=os.path.join(pkg_mybot, 'worlds', 'myworld.sdf'),
         description='Path to SDF world file'
     )
     
@@ -38,6 +37,9 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description', 
             '-name', 'mybot',
+            '-x', '-13.10',
+            '-y', '2.64',
+            '-z', '0.1'
         ],
         parameters=[{'use_sim_time': True}],
         output='screen'
