@@ -37,8 +37,8 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description', 
             '-name', 'mybot',
-            '-x', '-13.10',
-            '-y', '2.64',
+            '-x', '0.0',
+            '-y', '0.0',
             '-z', '0.1'
         ],
         parameters=[{'use_sim_time': True}],
