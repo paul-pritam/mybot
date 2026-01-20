@@ -58,10 +58,15 @@ mybot/
 ├── models/                     # Gazebo model files
 │   └── tugbot/                # Robot model directory
 │
-└── worlds/                     # Gazebo world/environment files
-    ├── tugbot_warehouse.sdf   # Warehouse environment
-    ├── tugbot.world           # Simple environment
-    └── tugbot_warehouse.sdf   # Alternative format
+├── worlds/                     # Gazebo world/environment files
+│   ├── tugbot_warehouse.sdf   # Warehouse environment (default)
+│   ├── tugbot.world           # Simple open environment
+│   ├── obstacles.world        # Obstacle course environment
+│   └── myworld.sdf            # Alternative environment
+│
+└── maps/                       # Pre-built maps for navigation
+    ├── map.yaml               # Map metadata and configuration
+    └── map.pgm                # Map image (occupancy grid)
 ```
 
 ## Dependencies
@@ -211,6 +216,29 @@ Pre-configured visualization including:
 ### obstacles.world
 - Obstacle course for navigation testing
 
+### myworld.sdf
+- Alternative environment configuration
+- Customizable scenario for testing
+
+## Pre-built Maps
+
+The `maps/` directory contains pre-computed maps for navigation tasks:
+
+- **map.yaml** - Map metadata file containing:
+  - Reference to the map image file
+  - Map resolution (meters per pixel)
+  - Map origin coordinates
+
+- **map.pgm** - Occupancy grid image used by nav2 and other navigation packages
+  - Can be loaded directly in SLAM Toolbox
+  - Used for localization and path planning
+
+### Using Pre-built Maps
+Load a map in your navigation stack:
+```bash
+ros2 launch nav2_bringup bringup_launch.py map:=install/mybot/share/mybot/maps/map.yaml
+```
+
 ## Extending the Package
 
 ### Adding New Sensors
@@ -258,7 +286,7 @@ Apache License 2.0 - See LICENSE.md for details
 
 ## Maintainer
 
-**Paul Pritam** (pritampaulwork7@gmail.com)
+See `package.xml` for current maintainer details
 
 ## Related Packages
 
