@@ -104,6 +104,13 @@ source install/setup.bash
 
 ## Usage
 
+### Launch Map
+
+Launch the map and localization components (useful when you want only mapping/localization without the full simulator):
+```bash
+ros2 launch mybot map.launch.py
+```
+
 ### 1. Launch Complete Simulation
 Starts Gazebo, spawns robot, bridges topics, and opens RViz:
 ```bash
@@ -239,6 +246,16 @@ Load a map in your navigation stack:
 ros2 launch nav2_bringup bringup_launch.py map:=install/mybot/share/mybot/maps/map.yaml
 ```
 
+## Example: Run Dijkstra Planner with MyBot
+
+```bash
+# Terminal 1: Launch the map and localization
+ros2 launch mybot map.launch.py
+
+# Terminal 2: Start the Dijkstra planner
+ros2 run dijkstra_planning dijkstra_planner --ros-args -p use_sim_time:=true
+```
+
 ## Extending the Package
 
 ### Adding New Sensors
@@ -293,3 +310,6 @@ See `package.xml` for current maintainer details
 - **fsm_bumpgo_cpp** - Bump-and-go finite state machine implementation
 - **slam_toolbox** - Autonomous mapping and localization
 - **ros_gz_sim** - Gazebo Ignition simulator bridge
+
+# References
+- Repository (Dijkstra): https://github.com/paul-pritam/dijkstra_path_planner.git
