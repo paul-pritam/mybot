@@ -39,7 +39,7 @@
             
             
             
-            <gz_frame_id>laser_frame</gz_frame_id>
+            <ignition_frame_id>laser_frame</ignition_frame_id>
 
             <ray>
                 <scan>

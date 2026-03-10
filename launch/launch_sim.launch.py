@@ -11,7 +11,7 @@ def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     world_arg = DeclareLaunchArgument('world',
-        default_value=os.path.join(pkg_mybot, 'worlds', 'small_house.sdf'),
+        default_value=os.path.join(pkg_mybot, 'worlds', 'small_warehouse.sdf'),
         description='Path to SDF world file'
     )
     

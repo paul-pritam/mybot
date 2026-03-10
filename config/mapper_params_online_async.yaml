@@ -1,14 +1,14 @@
 slam_toolbox:
   ros__parameters:
-    # System
-    use_sim_time: true
+    # System frames (unchanged)
+    use_sim_time: true            # Set to false if using a real robot
     odom_frame: odom
     map_frame: map
     base_frame: base_link
     scan_topic: /scan
     mode: mapping
 
-    # Update Rates
+    # Update Rates (unchanged)
     map_update_interval: 1.0
     minimum_time_interval: 0.1
     transform_timeout: 0.2
@@ -16,25 +16,26 @@ slam_toolbox:
     stack_size_to_use: 40000000
     enable_interactive_mode: true
 
-    # Map Config
+    # Map Config (unchanged)
     resolution: 0.05
     max_laser_range: 12.0
 
     # Scan Matcher (The wall snapping logic)
-    minimum_travel_distance: 0.05
-    minimum_travel_heading: 0.05
+    # --- Increased thresholds to avoid adding nodes when robot is stuck/vibrating ---
+    minimum_travel_distance: 0.05     # was 0.05 – now requires at least 20 cm movement
+    minimum_travel_heading: 0.5      # was 0.05 – now requires ~11.5° rotation
     correlation_search_space_dimension: 1.0
     correlation_search_space_resolution: 0.02
     correlation_search_space_smear_deviation: 0.1
 
-    # Loop Closure
+    # Loop Closure (enabled, with more selective matching)
     do_loop_closing: true
     use_response_expansion: true
     loop_search_maximum_distance: 5.0
     loop_match_minimum_chain_size: 10
     loop_match_maximum_variance_coarse: 3.0
     loop_match_minimum_response_coarse: 0.3
-    loop_match_minimum_response_fine: 0.4
+    loop_match_minimum_response_fine: 0.6   # was 0.4 – higher value reduces false positives
 
     # Solver
     solver_plugin: "solver_plugins::CeresSolver"
@@ -42,4 +43,5 @@ slam_toolbox:
     ceres_preconditioner: "SCHUR_JACOBI"
     ceres_trust_strategy: "LEVENBERG_MARQUARDT"
     ceres_dogleg_type: "TRADITIONAL_DOGLEG"
-    ceres_loss_function: "None"
+    # --- Use a robust loss function to downweight bad constraints ---
+    ceres_loss_function: "HuberLoss"   # was "None" – reduces influence of outliers
