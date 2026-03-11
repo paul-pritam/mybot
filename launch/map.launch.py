@@ -1,72 +1,51 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess, TimerAction
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    # --- 1. Configuration & Paths ---
-    pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
+    # Get the package directory
     pkg_mybot = get_package_share_directory('mybot')
-    
-    # Path to your map file
-    map_file_path = os.path.join(pkg_mybot, 'maps', 'my_map.yaml')
-    
-    # --- 2. Arguments ---
-    use_sim_time_arg = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation clock'
+
+    # Define file paths
+    map_file = os.path.join(pkg_mybot, 'maps', 'my_map.yaml')
+    amcl_file = os.path.join(pkg_mybot, 'config', 'amcl.yaml')
+
+    # Create the Map Server node
+    map_server_node = Node(
+        package='nav2_map_server',
+        executable='map_server',
+        name='map_server',
+        output='screen',
+        parameters=[{'yaml_filename': map_file},
+                    {'use_sim_time': True}]
     )
-    
-    map_arg = DeclareLaunchArgument(
-        'map',
-        default_value=map_file_path,
-        description='Full path to map yaml file to load'
+
+    # Create the AMCL node
+    amcl_node = Node(
+        package='nav2_amcl',
+        executable='amcl',
+        name='amcl',        
+        output='screen',
+        parameters=[amcl_file, 
+                    {'use_sim_time': True}]
+    )   
+
+    # Create the Lifecycle Manager node
+    lifecycle_manager_node = Node(
+        package='nav2_lifecycle_manager',
+        executable='lifecycle_manager', 
+        name='lifecycle_manager',
+        output='screen',
+        parameters=[{
+            'use_sim_time': True,
+            'autostart': True,
+            'node_names': ['map_server', 'amcl']
+        }]
     )
-    
-    # --- 3. The TF Fix (CRITICAL) ---
-    tf_footprint = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='base_link_to_base_footprint',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint']
-    )
-    
-    # --- 4. Localization (Map Server + AMCL) ---
-    localization = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_nav2_bringup, 'launch', 'localization_launch.py')
-        ),
-        launch_arguments={
-            'map': LaunchConfiguration('map'),
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
-            'autostart': 'true',
-            'use_lifecycle_mgr': 'true'
-        }.items()
-    )
-    
-    # --- 5. Publish initial pose after delay ---
-    initial_pose_publisher = TimerAction(
-        period=5.0,  # Delay in seconds to let AMCL initialize
-        actions=[
-            ExecuteProcess(
-                cmd=[
-                    'ros2', 'topic', 'pub', '--once', '/initialpose',
-                    'geometry_msgs/msg/PoseWithCovarianceStamped',
-                    '{header: {frame_id: "map"}, pose: {pose: {position: {x: 0.0, y: 0.0, z: 0.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}, covariance: [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942]}'
-                ],
-                output='screen'
-            )
-        ]
-    )
-    
+
     return LaunchDescription([
-        use_sim_time_arg,
-        map_arg,
-        tf_footprint,
-        localization,
-        initial_pose_publisher
+        map_server_node,
+        amcl_node,
+        lifecycle_manager_node
     ])
