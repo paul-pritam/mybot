@@ -1,17 +1,31 @@
 amcl:
   ros__parameters:
-    use_sim_time: true
-
-    # 🔑 FIX IS HERE
+    use_sim_time: true             
+    
+    # Frames and Topics
     base_frame_id: "base_link"
     odom_frame_id: "odom"
     global_frame_id: "map"
-
     scan_topic: "scan"
-
-    # Reasonable defaults
+    
+    # Particle Filter Parameters
     min_particles: 500
     max_particles: 2000
-    update_min_d: 0.25
-    update_min_a: 0.2
+    update_min_d: 0.25             # Translating 25cm triggers a particle update
+    update_min_a: 0.2              # Rotating ~11.4 degrees triggers an update
+    
+    # Laser Model
     laser_max_range: 12.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60                  # How many beams to use per scan (saves CPU)
+    
+    # Motion Model / Odometry (CRITICAL FOR NAVIGATING)
+    # Change to "nav2_amcl::OmniMotionModel" if your robot can move sideways!
+    robot_model_type: "nav2_amcl::DifferentialMotionModel" 
+    
+    # Odometry noise (Increase these if localization still drifts while moving)
+    alpha1: 0.2   # Expected rotational noise from rotational motion
+    alpha2: 0.2   # Expected rotational noise from translational motion
+    alpha3: 0.2   # Expected translational noise from translational motion
+    alpha4: 0.2   # Expected translational noise from rotational motion
+    alpha5: 0.2   # Translation noise (Omni models only)
