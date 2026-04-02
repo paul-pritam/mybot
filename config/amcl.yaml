@@ -28,4 +28,4 @@ amcl:
     alpha2: 0.2   # Expected rotational noise from translational motion
     alpha3: 0.2   # Expected translational noise from translational motion
     alpha4: 0.2   # Expected translational noise from rotational motion
-    alpha5: 0.2   # Translation noise (Omni models only)
+    #alpha5: 0.2   # Translation noise (Omni models only)
